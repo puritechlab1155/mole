@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>두더지 잡기 | 시안2</title>
+
+    <style>
+        @font-face {
+            font-family: 'RixInooAriDuriR';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2207-01@1.0/RixInooAriDuriR.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Pretendard-Bold';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Pretendard-SemiBold';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        * { padding: 0; margin: 0; box-sizing: border-box; }
+        body { width: 100%; overflow: hidden; }
+        ul, ol { list-style: none; }
+
+        .inner { width: 100%; max-width: 856px; margin: 0 auto; }
+
+        .content { width: 100%; height: 949px; overflow: hidden; position: relative; background: url(img/mole-bg02.png) no-repeat; background-size: cover; background-position: center; }
+        .content .bg-img-box { width: 100%; height: 100%; }
+        .content .bg-img-box img { width: 100%; height: 100%; }
+        .content .score-box { width: 856px; height: 229px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(5px); padding: 56px 83px 0; display: flex; justify-content: space-between; }
+        .content .score-box .score .score-text {
+            font-family: 'RixInooAriDuriR'; font-size: 24px;
+            background: linear-gradient(180deg, #A96D4F 0%, #6C3013 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            pointer-events: none;
+        }
+        .content .score-box .score .score-num { display: flex; gap: 10px; margin-top: 10px; pointer-events: none; }
+        .content .score-box .score .score-num .score-mole { width: 66px; height: 61px; display: block; }
+        .content .score-box .score .score-num .num {
+            font-family: 'RixInooAriDuriR';
+            color: #FFB101;
+            font-size: 60px;
+            text-shadow: -4px 0px #6C3013, 0px 4px #6C3013, 4px 0px #6C3013, 0px -4px #6C3013, -4px -4px #6C3013, 4px -4px #6C3013, -4px 4px #6C3013, 4px 4px #6C3013;
+        }
+
+        .content .score-box .best { text-align: right; }
+        .content .score-box .best .best-text {
+            font-family: 'RixInooAriDuriR';
+            color: #FFB101;
+            font-size: 20px;
+            text-shadow: -2px 0px #6C3013, 0px 2px #6C3013, 2px 0px #6C3013, 0px -2px #6C3013, -2px -2px #6C3013, 2px -2px #6C3013, -2px 2px #6C3013, 2px 2px #6C3013;
+
+            margin-bottom: 15px;
+
+            pointer-events: none;
+        }
+        .content .score-box .best .best-num {
+            font-family: 'RixInooAriDuriR';
+            color: #FFB101;
+            font-size: 60px;
+            text-shadow: -4px 0px #6C3013, 0px 4px #6C3013, 4px 0px #6C3013, 0px -4px #6C3013, -4px -4px #6C3013, 4px -4px #6C3013, -4px 4px #6C3013, 4px 4px #6C3013;
+            text-align: right;
+
+            pointer-events: none;
+        }
+        .start-button { position: absolute; left: 50%; bottom: 36px; transform: translateX(-50%); width: 100%; max-width: 486px; height: 98px; border: 0; border-radius: 14px; background: linear-gradient(180deg, #7B3615 0%, #572208 100%); cursor: pointer; }
+        .start-button .text {
+            font-family: 'RixInooAriDuriR';
+            color: #FFB101;
+            font-size: 56px;
+            text-shadow: -3px 0px #6C3013, 0px 3px #6C3013, 3px 0px #6C3013, 0px -3px #6C3013, -3px -3px #6C3013, 3px -3px #6C3013, -3px 3px #6C3013, 3px 3px #6C3013;
+        }
+        .time {
+            font-family: 'RixInooAriDuriR';
+            color: #FFB101;
+            font-size: 56px;
+            text-shadow: -3px 0px #6C3013, 0px 3px #6C3013, 3px 0px #6C3013, 0px -3px #6C3013, -3px -3px #6C3013, 3px -3px #6C3013, -3px 3px #6C3013, 3px 3px #6C3013;
+        }
+
+        .cell { width: 198px; height: 157px; display: inline-block; position: relative; overflow: hidden; }
+        .mole { width: 198px; height: 157px; position: absolute; bottom: 0; transition: bottom 1s; }
+        .mole-basic { background: url(img/mole-basic02.png) center center no-repeat; background-size: 119px 157px; }
+        .mole-basic.hit { background: url(img/mole-basic-hit02.png) center center no-repeat; background-size: 119px 157px; }
+        .mole-red { background: url(img/mole-red02.png) center center no-repeat; background-size: 119px 157px; }
+        .mole-red.hit { background: url(img/mole-red-hit02.png) center center no-repeat; background-size: 119px 157px; }
+        .mole-blue { background: url(img/mole-blue02.png) center center no-repeat; background-size: 119px 157px; }
+        .mole-blue.hit { background: url(img/mole-blue-hit02.png) center center no-repeat; background-size: 119px 157px; }
+        .mole-yellow { background: url(img/mole-yellow02.png) center center no-repeat; background-size: 119px 157px; }
+        .mole-yellow.hit { background: url(img/mole-yellow-hit02.png) center center no-repeat; background-size: 119px 157px; }
+        .hidden { bottom: -200px; }
+        .hole { width: 198px; height: 70px; position: absolute; bottom: 0; background: url(img/hole02.png) center center no-repeat; background-size: 198px 70px; }
+        .hole-front { width: 198px; height: 36px; position: absolute; bottom: 0; background: url(img/hole-front02.png) center center no-repeat; background-size: 198px 36px; }
+
+        .game-box { padding: 0 70px; margin-top: 60px; }
+        .game-box .row { display: flex; justify-content: space-between; margin-top: -15px; }
+
+        .start-count { position: absolute; left: 0; bottom: 0; top: 0; right: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 100; display: none; justify-content: center; align-items: center; }
+        .start-count-text {
+            font-family: 'RixInooAriDuriR';
+            color: #FFB101;
+            font-size: 150px;
+            text-shadow: -9px 0px #6C3013, 0px 9px #6C3013, 9px 0px #6C3013, 0px -9px #6C3013, -9px -9px #6C3013, 9px -9px #6C3013, -9px 9px #6C3013, 9px 9px #6C3013;
+
+            pointer-events: none;
+        }
+
+        #cursor { width: 135px; height: 114px; position: absolute; z-index: 99; pointer-events: none; background: url(img/hammer.png) center center no-repeat; background-size: 135px 114px; transform: translate(-50%, -50%); }
+
+        .ranking-popup { position: absolute; left: 0; top: 0; bottom: 0; right: 0; z-index: 101; background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; }
+        .ranking-popup .rank-box { padding: 65px 32px 34px; border-radius: 18px; background: linear-gradient(180deg, #71E3FF -68.23%, #CFF7F9 53.9%), #FFF; position: relative; }
+        .ranking-popup .rank-box .close {
+            font-family: 'RixInooAriDuriR';
+            font-size: 32px;
+            font-weight: 400;
+            line-height: normal;
+
+            background: linear-gradient(180deg, #7B3615 0%, #572208 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            position: absolute;
+            right: 28px;
+            top: 25px;
+
+            border: 0;
+            cursor: pointer;
+        }
+        .ranking-popup .rank-box .rank-box-title {
+            font-family: 'RixInooAriDuriR';
+            font-size: 32px;
+            font-weight: 400;
+            line-height: normal;
+
+            background: linear-gradient(180deg, #7B3615 0%, #572208 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            text-align: center;
+        }
+        .ranking-popup .rank-box h6 {
+            padding: 10px; text-align: center; background: #FFF5E6;
+            border-radius: 20px 20px 0 0;
+            margin-top: 20px;
+
+            font-family: 'RixInooAriDuriR';
+            color: #FFB101;
+            font-size: 24px;
+            text-shadow: -2px 0px #6C3013, 0px 2px #6C3013, 2px 0px #6C3013, 0px -2px #6C3013, -2px -2px #6C3013, 2px -2px #6C3013, -2px 2px #6C3013, 2px 2px #6C3013;
+        }
+        .ranking-popup .rank-box .popup-body { border-radius: 0 0 20px 20px; background: #fff; box-shadow: 0px 0px 14px rgba(33, 65, 161, 0.08); overflow: hidden; padding: 24px 16px 13px; }
+        .ranking-popup .rank-box .popup-body .best-ranker { display: flex; flex-direction: column; width: 284px; gap: 6px; margin: 0 auto; }
+        .ranking-popup .rank-box .popup-body .best-ranker li {
+            display: flex; gap: 8px; align-items: center; padding: 10px 14px 10px 12px; border-radius: 10px; background: linear-gradient(180deg, #FFF5E6 0%, #FFE8C5 100%);
+        }
+        .ranking-popup .rank-box .popup-body .best-ranker li img { display: block; }
+        .ranking-popup .rank-box .popup-body .best-ranker li .ranker-name {
+            flex: 1;
+
+            color: #672607;
+            font-family: 'Pretendard-Bold';
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .ranking-popup .rank-box .popup-body .best-ranker li .ranker-score {
+            color: #672607;
+            font-family: 'Pretendard-SemiBold';
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .ranking-popup .rank-box .popup-body .user-me { width: 316px; padding: 16px 22px; display: flex; align-items: center; gap: 13px; border-radius: 14px; background: linear-gradient(180deg, #7B3615 0%, #572208 100%); margin-top: 48px; }
+        .ranking-popup .rank-box .popup-body .user-me .my-rank {
+            color: #FFAA01;
+            font-family: 'RixInooAriDuriR';
+            font-size: 22px;
+            font-weight: 400;
+        }
+        .ranking-popup .rank-box .popup-body .user-me .my-id {
+            color: #FFAA01;
+            font-family: 'Pretendard-Bold';
+            font-size: 22px;
+            font-weight: 700;
+
+            flex: 1;
+        }
+        .ranking-popup .rank-box .popup-body .user-me .my-score {
+            color: #FFAA01;
+            font-family: 'Pretendard-Bold';
+            font-size: 20px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div id="cursor"></div>
+
+    <div class="event-wrap">
+        <div class="inner">
+            <div class="content">
+                <div class="start-count">
+                    <span class="start-count-text">Go !</span>
+                </div>
+
+                <div class="score-box">
+                    <div class="score">
+                        <div class="score-text">Score</div>
+                        <div class="score-num"><img src="img/score-mole.svg" class="score-mole" alt=""><span class="num">0</span></div>
+                    </div>
+
+                    <div class="best">
+                        <div class="best-text">Best</div>
+                        <div class="best-num">-</div>
+                    </div>
+                </div>
+
+                <div id="game" class="game-box">
+                    <div class="row">
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+                    </div><!-- //row -->
+
+                    <div class="row">
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+                    </div><!-- //row -->
+
+                    <div class="row">
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="hole"></div>
+                            <div class="mole mole-basic hidden"></div>
+                            <div class="mole mole-red hidden"></div>
+                            <div class="mole mole-blue hidden"></div>
+                            <div class="mole mole-yellow hidden"></div>
+                            <div class="hole-front"></div>
+                        </div>
+                    </div><!-- //row -->
+                </div>
+
+                <button class="start-button">
+                    <span class="text">게임 시작</span>
+                </button>
+
+                <div class="ranking-popup">
+                    <div class="rank-box">
+                        <button class="close"><img src="img/ranking-close.svg" style="display: block;"></button>
+
+                        <h5 class="rank-box-title">
+                            게임 종료
+                        </h5>
+
+                        <h6>RANKING</h6>
+
+                        <div class="popup-body">
+                            <ul class="best-ranker">
+                                <li class="first-place">
+                                    <img src="img/first-place.svg">
+                                    <div class="ranker-name">First User</div>
+                                    <div class="ranker-score"><span class="top-score">0</span>점</div>
+                                </li>
+                                <li class="second-place">
+                                    <img src="img/second-place.svg">
+                                    <div class="ranker-name">Second User</div>
+                                    <div class="ranker-score"><span class="second-score"></span>점</div>
+                                </li>
+                                <li class="third-place">
+                                    <img src="img/third-place.svg">
+                                    <div class="ranker-name">Third User</div>
+                                    <div class="ranker-score"><span class="third-score"></span>점</div>
+                                </li>
+                            </ul>
+
+                            <div class="user-me">
+                                <div class="my-rank"></div>
+                                <div class="my-id">User</div>
+                                <div class="my-score"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- //ranking-popup -->
+            </div><!-- //content -->
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        let mouseCursor = document.querySelector('#cursor');
+        let isMoving = false;
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isMoving) {
+                isMoving = true;
+                requestAnimationFrame(() => {
+                    mouseCursor.style.transform = `translate3d(${e.pageX}px, ${e.pageY}px, 0) translate(-50%, -50%)`;
+                    isMoving = false;
+                });
+            }
+        });
+
+        // 망치 기본 이미지와 hit 이미지 경로
+        const hammerDefaultImage = "url('img/hammer.png')";
+        const hammerHitImage = "url('img/hammer-hit.png')";
+
+
+
+        // 최고 점수 저장 위한 key
+        const BEST_SCORE_KEY = 'bestScore';
+
+        const RANKING_KEY = 'rankingScores';
+
+        const $topScore = document.querySelector('.top-score'); // 1등 점수 표시 요소
+        const $secondScore = document.querySelector('.second-score'); // 1등 점수 표시 요소
+        const $thirdScore = document.querySelector('.third-score'); // 1등 점수 표시 요소
+        const $myRank = document.querySelector('.my-rank'); // 내 등수 표시
+
+        // 페이지 로드 시 localStorage에서 최고 점수 불러오기
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedBestScore = parseInt(localStorage.getItem(BEST_SCORE_KEY), 10) || 0;
+            $bestScore.textContent = savedBestScore; // 최고 점수 표시
+
+            const savedRanking = JSON.parse(localStorage.getItem(RANKING_KEY)) || [];
+            updateRankingDisplay(savedRanking);
+        });
+
+        // 점수 표시 업데이트 함수
+        function updateRankingDisplay(scores) {
+            $topScore.textContent = scores[0] || 0;
+            $secondScore.textContent = scores[1] || 0;
+            $thirdScore.textContent = scores[2] || 0;
+        }
+
+        function updateRanking(newScore) {
+            const savedRanking = JSON.parse(localStorage.getItem(RANKING_KEY)) || [];
+            savedRanking.push(newScore); // 새 점수 추가
+            
+            // 전체 점수 정렬
+            const fullRanking = savedRanking.sort((a, b) => b - a);
+
+            // 상위 3개 점수
+            const topThree = fullRanking.slice(0, 3);
+
+            localStorage.setItem(RANKING_KEY, JSON.stringify(fullRanking)); // 저장
+            updateRankingDisplay(topThree); // 화면에 갱신
+
+            // 최고 점수 갱신
+            const currentBestScore = Math.max(...fullRanking);
+            localStorage.setItem(BEST_SCORE_KEY, currentBestScore); // 최고 점수 저장
+            $bestScore.textContent = currentBestScore; // 최고 점수 표시
+
+            // 내 등수 계산
+            const myRankIndex = fullRanking.indexOf(newScore) + 1;
+            $myRank.textContent = `${myRankIndex}`; // 등수 표시
+        }
+
+        const $score = document.querySelector('.score-num .num');
+        const $game = document.querySelector('#game');
+        const $$cells = document.querySelectorAll('.cell');
+        const $start = document.querySelector('.start-button');
+        const $startCount = document.querySelector('.start-count'); // 카운트다운 화면
+        const $startCountText = document.querySelector('.start-count-text'); // 카운트다운 텍스트
+        const rankingPopup = document.querySelector('.ranking-popup');
+
+        let started = false;
+        const holes = Array($$cells.length).fill(0);
+
+        let time = 60; // 남은 시간 초기값
+        let timerId = null;
+        let tickId = null;
+
+        let score = 0; // 현재 점수
+        let bestScore = 0; // 최고 점수
+        let myScore = 0; // 내 최종 점수
+        const $bestScore = document.querySelector('.best-num'); // 최고 점수 표시 엘리먼트
+        const $myScore = document.querySelector('.my-score');
+
+        $start.addEventListener('click', () => {
+            if (started) return; // 이미 시작했으면 무시
+            started = true;
+
+            $start.disabled = true; // 버튼 비활성화
+            console.log('시작');
+
+            // 점수 초기화
+            score = 0;
+            $score.textContent = score;
+
+            // 카운트다운 시작
+            let countdown = 3; // 3초 카운트다운
+            $startCount.style.display = 'flex'; // 카운트다운 화면 표시
+            $startCountText.textContent = countdown;
+
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    $startCountText.textContent = countdown; // 카운트다운 숫자 업데이트
+                } else if (countdown === 0) {
+                    $startCountText.textContent = 'Go !'; // 마지막에 "Go !" 표시
+                } else {
+                    clearInterval(countdownInterval); // 카운트다운 종료
+                    $startCount.style.display = 'none'; // 카운트다운 화면 숨김
+
+                    // 게임 타이머 초기화
+                    time = 30; // 남은 시간을 초기화
+
+                    // 게임 타이머 시작
+                    timerId = setInterval(() => {
+                        time = Math.max(0, time - 0.1); // 시간 감소
+                        const minutes = Math.floor(time / 60); // 분 계산
+                        const seconds = Math.floor(time % 60); // 초 계산
+
+                        // 남은 시간을 "0:XX" 형식으로 표시
+                        $start.querySelector('.text').innerHTML = `<span class="time">${minutes} : ${seconds < 10 ? '0' : ''}${seconds}</span>`;
+
+                        if (time <= 0) {
+                            clearInterval(timerId); // 타이머 중지
+                            clearInterval(tickId); // 두더지 출현 중지
+
+                            // 최고 점수 갱신
+                            if (score > bestScore) {
+                                bestScore = score;
+                                $bestScore.textContent = bestScore;
+
+                                $topScore.textContent = bestScore; // 1등 점수 갱신
+
+                                // localStorage에 저장
+                                localStorage.setItem(BEST_SCORE_KEY, bestScore);
+                            }
+
+                            setTimeout(() => {
+                                // 게임 시작 텍스트 복원
+                                $start.querySelector('.text').textContent = '게임 시작';
+                                $start.disabled = false; // 버튼 활성화
+                                started = false; // 게임 상태 초기화
+
+                                rankingPopup.style.display = 'flex';
+
+                                myScore = score;
+                                $myScore.textContent = myScore + '점';
+
+                                updateRanking(score); // 새 점수 추가 및 랭킹 갱신
+                            }, 50);
+                        }
+                    }, 100);
+
+                    // 두더지 출현 로직 시작
+                    tickId = setInterval(tick, 1000);
+                    tick();
+                }
+            }, 1000); // 1초마다 카운트다운
+        });
+
+        const popupClose = rankingPopup.querySelector('.ranking-popup .close');
+        popupClose.addEventListener('click', function() {
+            rankingPopup.style.display = 'none';
+        });
+
+        let basicPercent = 0.3;
+        let yellowPercent = 0.2;
+        let bluePercent = 0.15;
+        let redPercent = 0.1;
+
+        function tick() {
+            holes.forEach((hole, index) => {
+                if (hole) return; // 이미 동작 중인 구멍은 건너뜀
+
+                const randomValue = Math.random();
+                let $gopher;
+
+                if (randomValue < basicPercent) {
+                    $gopher = $$cells[index].querySelector('.mole-basic');
+                } else if (randomValue < basicPercent + yellowPercent) {
+                    $gopher = $$cells[index].querySelector('.mole-yellow');
+                } else if (randomValue < basicPercent + yellowPercent + bluePercent) {
+                    $gopher = $$cells[index].querySelector('.mole-blue');
+                } else if (randomValue < basicPercent + yellowPercent + bluePercent + redPercent) {
+                    $gopher = $$cells[index].querySelector('.mole-red');
+                }
+
+                if ($gopher) {
+                    $gopher.classList.remove('hidden');
+                    holes[index] = setTimeout(() => {
+                        $gopher.classList.add('hidden');
+                        holes[index] = 0;
+                    }, 1000);
+                }
+            });
+        }
+
+        function handleHammerClick() {
+            mouseCursor.style.backgroundImage = hammerHitImage;
+
+            // 200ms 후 망치 이미지를 원래대로 복원하고 트랜지션 다시 추가
+            setTimeout(() => {
+                mouseCursor.style.backgroundImage = hammerDefaultImage;
+            }, 200);
+        }
+
+        $$cells.forEach(($cell, index) => {
+            $cell.querySelectorAll('.mole').forEach(($mole) => {
+                $mole.addEventListener('click', (event) => {
+                    if (!$mole) return; // 클릭한 요소가 두더지가 아니면 무시
+
+                    handleHammerClick();
+
+                    // 점수 추가
+                    if (event.target.classList.contains('mole-basic')) {
+                        score += 1;
+                    } else if (event.target.classList.contains('mole-yellow')) {
+                        score += 2;
+                    } else if (event.target.classList.contains('mole-blue')) {
+                        score += 3;
+                    } else if (event.target.classList.contains('mole-red')) {
+                        score += 4;
+                    }
+
+                    $score.textContent = score;
+
+                    event.target.classList.add('hit');
+                    event.target.classList.add('hidden');
+                    clearTimeout(holes[index]); // 기존 내려가는 타이머 제거
+
+                    setTimeout(() => {
+                        holes[index] = 0;
+                        event.target.classList.remove('hit');
+                    }, 1000);
+                });
+            });
+        });
+
+        function clearAllTimers() {
+            if (timerId) clearInterval(timerId);
+            if (tickId) clearInterval(tickId);
+            holes.forEach((timeoutId) => clearTimeout(timeoutId));
+            holes.fill(0);
+        }
+    </script>
+</body>
+</html>
