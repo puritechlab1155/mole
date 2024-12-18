@@ -32,9 +32,8 @@
         .inner { width: 100%; max-width: 856px; margin: 0 auto; }
 
         .content { width: 100%; height: 949px; overflow: hidden; position: relative; background: url(img/mole-bg02.png) no-repeat; background-size: cover; background-position: center; }
-        .content .bg-img-box { width: 100%; height: 100%; }
-        .content .bg-img-box img { width: 100%; height: 100%; }
-        .content .score-box { width: 856px; height: 229px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(5px); padding: 56px 83px 0; display: flex; justify-content: space-between; }
+
+        .content .score-box { width: 100%; max-width: 856px; height: 229px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(5px); padding: 56px 83px 0; display: flex; justify-content: space-between; }
         .content .score-box .score .score-text {
             font-family: 'RixInooAriDuriR'; font-size: 24px;
             background: linear-gradient(180deg, #A96D4F 0%, #6C3013 100%);
@@ -73,6 +72,7 @@
 
             pointer-events: none;
         }
+
         .start-button { position: absolute; left: 50%; bottom: 36px; transform: translateX(-50%); width: 100%; max-width: 486px; height: 98px; border: 0; border-radius: 14px; background: linear-gradient(180deg, #7B3615 0%, #572208 100%); cursor: pointer; }
         .start-button .text {
             font-family: 'RixInooAriDuriR';
@@ -119,21 +119,15 @@
         .ranking-popup { position: absolute; left: 0; top: 0; bottom: 0; right: 0; z-index: 101; background: rgba(0, 0, 0, 0.5); display: none; justify-content: center; align-items: center; }
         .ranking-popup .rank-box { padding: 65px 32px 34px; border-radius: 18px; background: linear-gradient(180deg, #71E3FF -68.23%, #CFF7F9 53.9%), #FFF; position: relative; }
         .ranking-popup .rank-box .close {
-            font-family: 'RixInooAriDuriR';
-            font-size: 32px;
-            font-weight: 400;
-            line-height: normal;
-
-            background: linear-gradient(180deg, #7B3615 0%, #572208 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-
             position: absolute;
             right: 28px;
             top: 25px;
 
+            width: 16px;
+            height: 16px;
+
             border: 0;
+            background: transparent;
             cursor: pointer;
         }
         .ranking-popup .rank-box .rank-box-title {
@@ -148,6 +142,7 @@
             -webkit-text-fill-color: transparent;
 
             text-align: center;
+            pointer-events: none;
         }
         .ranking-popup .rank-box h6 {
             padding: 10px; text-align: center; background: #FFF5E6;
@@ -158,13 +153,16 @@
             color: #FFB101;
             font-size: 24px;
             text-shadow: -2px 0px #6C3013, 0px 2px #6C3013, 2px 0px #6C3013, 0px -2px #6C3013, -2px -2px #6C3013, 2px -2px #6C3013, -2px 2px #6C3013, 2px 2px #6C3013;
+
+            pointer-events: none;
         }
+
         .ranking-popup .rank-box .popup-body { border-radius: 0 0 20px 20px; background: #fff; box-shadow: 0px 0px 14px rgba(33, 65, 161, 0.08); overflow: hidden; padding: 24px 16px 13px; }
         .ranking-popup .rank-box .popup-body .best-ranker { display: flex; flex-direction: column; width: 284px; gap: 6px; margin: 0 auto; }
         .ranking-popup .rank-box .popup-body .best-ranker li {
             display: flex; gap: 8px; align-items: center; padding: 10px 14px 10px 12px; border-radius: 10px; background: linear-gradient(180deg, #FFF5E6 0%, #FFE8C5 100%);
         }
-        .ranking-popup .rank-box .popup-body .best-ranker li img { display: block; }
+        .ranking-popup .rank-box .popup-body .best-ranker li img { display: block; width: 30px; height: 30px; }
         .ranking-popup .rank-box .popup-body .best-ranker li .ranker-name {
             flex: 1;
 
@@ -179,7 +177,9 @@
             font-size: 16px;
             font-weight: 600;
         }
-        .ranking-popup .rank-box .popup-body .user-me { width: 316px; padding: 16px 22px; display: flex; align-items: center; gap: 13px; border-radius: 14px; background: linear-gradient(180deg, #7B3615 0%, #572208 100%); margin-top: 48px; }
+
+        .ranking-popup .rank-box .popup-body .user-me { width: 316px; padding: 16px 22px; display: flex; align-items: center; gap: 13px; border-radius: 14px; background: linear-gradient(180deg, #7B3615 0%, #572208 100%); margin-top: 48px; position: relative; }
+        .ranking-popup .rank-box .popup-body .user-me::before { content: ''; width: 2px; height: 10px; background: #fff url(img/ellipses.svg) no-repeat; position: absolute; left: 50%; bottom: 100%; transform: translate(-50%, -19px); }
         .ranking-popup .rank-box .popup-body .user-me .my-rank {
             color: #FFAA01;
             font-family: 'RixInooAriDuriR';
@@ -199,6 +199,73 @@
             font-family: 'Pretendard-Bold';
             font-size: 20px;
             font-weight: 700;
+        }
+
+        @media only all and (max-width : 767px) {
+            .content { height: 844px; background: url(img/mole-bg02-mo.png) no-repeat; background-size: cover; background-position: center; }
+
+            .content .score-box { height: 172px; padding: 57px 24px 0; }
+            .content .score-box .score .score-text { font-size: 16px; }
+            .content .score-box .score .score-num { gap: 15px; margin-top: 9px; }
+            .content .score-box .score .score-num .score-mole { width: 45px; height: 40px; }
+            .content .score-box .score .score-num .num {
+                font-size: 34px;
+                text-shadow: -3px 0px #6C3013, 0px 3px #6C3013, 3px 0px #6C3013, 0px -3px #6C3013, -3px -3px #6C3013, 3px -3px #6C3013, -3px 3px #6C3013, 3px 3px #6C3013;
+            }
+
+            .content .score-box .best .best-text { font-size: 16px; margin-bottom: 10px; }
+            .content .score-box .best .best-num {
+                font-size: 34px;
+                text-shadow: -3px 0px #6C3013, 0px 3px #6C3013, 3px 0px #6C3013, 0px -3px #6C3013, -3px -3px #6C3013, 3px -3px #6C3013, -3px 3px #6C3013, 3px 3px #6C3013;
+            }
+
+            .start-button  { bottom: 40px; max-width: 342px; height: 67px; }
+            .start-button .text { font-size: 30px; }
+            .time { font-size: 30px; }
+
+            .cell { width: 103px; height: 88px; }
+            .mole { width: 103px; height: 88px; }
+            .mole-basic { background-size: 64px 84px; }
+            .mole-basic.hit { background-size: 64px 84px; }
+            .mole-red { background-size: 64px 84px; }
+            .mole-red.hit { background-size: 64px 84px; }
+            .mole-blue { background-size: 64px 84px; }
+            .mole-blue.hit { background-size: 64px 84px; }
+            .mole-yellow { background-size: 64px 84px; }
+            .mole-yellow.hit { background-size: 64px 84px; }
+            .hidden { bottom: -100px; }
+            .hole { width: 103px; height: 37px; background-size: 103px 27px; }
+            .hole-front { width: 103px; height: 20px; background-size: 103px 19px; }
+
+            .game-box { padding: 0 17px; margin-top: 150px; }
+            .game-box .row { margin-top: 20px; }
+
+            .start-count-text {
+                font-size: 100px;
+                text-shadow: -8px 0px #6C3013, 0px 8px #6C3013, 8px 0px #6C3013, 0px -8px #6C3013, -8px -8px #6C3013, 8px -8px #6C3013, -8px 8px #6C3013, 8px 8px #6C3013;
+            }
+
+            #cursor { display: none; }
+
+            .ranking-popup .rank-box { padding: 40px 19px 17px; }
+            .ranking-popup .rank-box .close {
+                right: 20px;
+                top: 20px;
+
+                width: 15px;
+                height: 15px;
+            }
+            .ranking-popup .rank-box h6 { font-size: 20px; }
+
+            .ranking-popup .rank-box .popup-body { padding: 18px 16px 16px; }
+            .ranking-popup .rank-box .popup-body .best-ranker { width: 100%; }
+            .ranking-popup .rank-box .popup-body .best-ranker li .ranker-name { font-size: 16px; }
+
+            .ranking-popup .rank-box .popup-body .user-me { width: 246px; padding: 16px; border-radius: 10px; margin-top: 26px; }
+            .ranking-popup .rank-box .popup-body .user-me::before { transform: translate(-50%, -8px); }
+            .ranking-popup .rank-box .popup-body .user-me .my-rank { font-size: 20px; }
+            .ranking-popup .rank-box .popup-body .user-me .my-id { font-size: 20px; }
+            .ranking-popup .rank-box .popup-body .user-me .my-score { font-size: 18px; }
         }
     </style>
 </head>
@@ -319,7 +386,7 @@
 
                 <div class="ranking-popup">
                     <div class="rank-box">
-                        <button class="close"><img src="img/ranking-close.svg" style="display: block;"></button>
+                        <button class="close"><img src="img/ranking-close.svg" style="display: block; width: 100%;"></button>
 
                         <h5 class="rank-box-title">
                             게임 종료
@@ -573,8 +640,11 @@
 
         $$cells.forEach(($cell, index) => {
             $cell.querySelectorAll('.mole').forEach(($mole) => {
+                // 두더지가 클릭되었는지 여부를 확인하는 속성 추가
+                $mole.isClicked = false;
+
                 $mole.addEventListener('click', (event) => {
-                    if (!$mole) return; // 클릭한 요소가 두더지가 아니면 무시
+                    if (!$mole || $mole.isClicked) return; // 이미 클릭된 두더지면 점수 추가 금지
 
                     handleHammerClick();
 
@@ -591,6 +661,9 @@
 
                     $score.textContent = score;
 
+                    // 클릭된 상태로 설정
+                    $mole.isClicked = true;
+
                     event.target.classList.add('hit');
                     event.target.classList.add('hidden');
                     clearTimeout(holes[index]); // 기존 내려가는 타이머 제거
@@ -598,6 +671,9 @@
                     setTimeout(() => {
                         holes[index] = 0;
                         event.target.classList.remove('hit');
+
+                        // 클릭 상태 초기화
+                        $mole.isClicked = false;
                     }, 1000);
                 });
             });
