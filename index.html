@@ -434,6 +434,20 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeMoles(); // DOM 로드 시 초기화
+        });
+
+        function initializeMoles() {
+            $$cells.forEach(($cell) => {
+                $cell.querySelectorAll('.mole').forEach(($mole) => {
+                    $mole.classList.add('hidden');
+                });
+            });
+        }
+
+
+
         let mouseCursor = document.querySelector('#cursor');
         let isMoving = false;
 
@@ -500,14 +514,6 @@
             // 내 등수 계산
             const myRankIndex = fullRanking.indexOf(newScore) + 1;
             $myRank.textContent = `${myRankIndex}`; // 등수 표시
-        }
-
-        function initializeMoles() {
-            $$cells.forEach(($cell) => {
-                $cell.querySelectorAll('.mole').forEach(($mole) => {
-                    $mole.classList.add('hidden');
-                });
-            });
         }
 
         const $score = document.querySelector('.score-num .num');
