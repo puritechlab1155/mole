@@ -502,6 +502,14 @@
             $myRank.textContent = `${myRankIndex}`; // 등수 표시
         }
 
+        function initializeMoles() {
+            $$cells.forEach(($cell) => {
+                $cell.querySelectorAll('.mole').forEach(($mole) => {
+                    $mole.classList.add('hidden');
+                });
+            });
+        }
+
         const $score = document.querySelector('.score-num .num');
         const $game = document.querySelector('#game');
         const $$cells = document.querySelectorAll('.cell');
@@ -525,6 +533,8 @@
 
         $start.addEventListener('click', () => {
             if (started) return; // 이미 시작했으면 무시
+
+            initializeMoles(); // 두더지 초기 상태 설정
             started = true;
 
             $start.disabled = true; // 버튼 비활성화
